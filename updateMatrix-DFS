@@ -1,0 +1,69 @@
+public class Solution {
+    static int dx[]={1,0,0,-1};
+static int dy[]={0,1,-1,0};
+
+public static int[][] initialize(int[][] visited)
+{
+    for(int i=0;i<visited.length;i++)
+    {
+        for(int j=0;j<visited[0].length;j++)
+        {
+            visited[i][j]=0;
+        }
+    }
+    return visited; 
+}
+
+public static int DFS(int i,int j,int[][] matrix,int[][] visited,int l)
+{
+    visited[i][j]=1;
+    
+    int testx,testy;
+    int min=Integer.MAX_VALUE;
+    for(int k=0;k<=3;k++)
+    {
+        testx= i+dx[k];
+        testy= j+dy[k];
+        
+        if(testx>=0 && testy>=0 && testx<visited.length && testy<visited[0].length)         //boundary conition
+        {
+            if(visited[testx][testy]==0)
+            {
+                if(matrix[testx][testy]==1)
+                {
+                    int temp=DFS(testx,testy,matrix,visited,l+1);
+                    if(min>temp)
+                        min=temp;
+                }
+                else
+                    return l+1;
+            }
+        }
+        
+    }
+    
+    return min;
+}
+    public int[][] updateMatrix(int[][] matrix) {
+        int sizeOfCol=matrix[0].length;
+    
+    int[][] visited = new int[matrix.length][matrix[0].length];
+    
+    for(int i=0;i<matrix.length;i++)
+    {
+        for(int j=0;j<sizeOfCol;j++)
+        {
+            if(matrix[i][j]==0)
+                continue;
+            else
+            {
+                visited=initialize(visited);
+                matrix[i][j]=DFS(i,j,matrix,visited,0);
+            }
+        }
+    }
+    
+    
+    return matrix;
+    }
+}
